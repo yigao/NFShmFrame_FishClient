@@ -1,0 +1,13 @@
+package BigAwardTipsEffectConfig_2002;
+
+message BigAwardTipsEffectConfigData{
+repeated BigAwardTipsEffectConfig BigAwardTipsEffectConfigList = 1;
+}
+
+message BigAwardTipsEffectConfig{
+optional int32 id = 1[default=0];
+optional string bigAwardTipsResource = 2[default=''];
+optional float bigAwardTipsDelayTime = 3[default=0];
+optional float bigAwardTipsShowTime = 4[default=0];
+optional int32 bigAwardTipsShowAudio = 5[default=0];
+}

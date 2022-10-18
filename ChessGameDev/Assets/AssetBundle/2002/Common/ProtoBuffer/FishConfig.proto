@@ -1,0 +1,43 @@
+package FishConfig_2002;
+
+message FishConfigData{
+repeated FishConfig FishConfigList = 1;
+}
+
+message FishConfig{
+optional int32 id = 1[default=0];
+optional string fishName = 2[default=''];
+optional int32 fishRuleType = 3[default=0];
+optional int32 clientBuildFishType = 4[default=0];
+optional float fishRadius = 5[default=0];
+optional int32 ratioMin = 6[default=0];
+optional int32 ratioMax = 7[default=0];
+optional int32 doubleAwardMinRatio = 8[default=0];
+optional int32 childFishCount = 9[default=0];
+repeated string childFishIds = 10;
+optional int32 damageRadius = 11[default=0];
+optional string damageFishIds = 12[default=''];
+optional int32 layerMin = 13[default=0];
+optional int32 layerMax = 14[default=0];
+optional int32 fishDieLayer = 15[default=0];
+optional float fishDieTime = 16[default=0];
+optional string fishBornAudio = 17[default=''];
+optional string FishDieAudio = 18[default=''];
+optional string fishMoveAnimationName = 19[default=''];
+optional string lockIcon = 20[default=''];
+optional int32 winScoreID = 21[default=0];
+optional int32 plusTipsID = 22[default=0];
+optional int32 coinEffectId = 23[default=0];
+optional int32 fishKillFishCoinEffectID = 24[default=0];
+optional int32 coinEffectCount = 25[default=0];
+optional int32 dieEffectId = 26[default=0];
+optional int32 fishDamageFishDieEffectID = 27[default=0];
+optional float dieScaleX = 28[default=0];
+optional float dieScaleY = 29[default=0];
+optional float dieScaleZ = 30[default=0];
+optional int32 fishOutTipsID = 31[default=0];
+optional string fishOutTipsResource = 32[default=''];
+optional float fishOutTipsTime = 33[default=0];
+optional int32 IsShakeScreen = 34[default=0];
+optional int32 IsPhoneVibrate = 35[default=0];
+}

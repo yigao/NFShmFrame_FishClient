@@ -1,0 +1,14 @@
+package ScoreEffectConfig_2001;
+
+message ScoreEffectConfigData{
+repeated ScoreEffectConfig ScoreEffectConfigList = 1;
+}
+
+message ScoreEffectConfig{
+optional int32 id = 1[default=0];
+optional int32 scoreType = 2[default=0];
+optional string scoreResource = 3[default=''];
+optional float scoreDelayTime = 4[default=0];
+optional float scoreShowTime = 5[default=0];
+optional int32 scoreShowAudio = 6[default=0];
+}

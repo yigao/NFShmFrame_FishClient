@@ -1,0 +1,171 @@
+﻿
+
+<linker>
+
+	<assembly fullname="UnityEngine.CoreModule">
+	    <type fullname="UnityEngine.GameObject" preserve="all"/>
+		<type fullname="UnityEngine.WaitForEndOfFrame" preserve="all"/>
+		<type fullname="UnityEngine.WaitForFixedUpdate" preserve="all"/>
+		<type fullname="UnityEngine.WaitForSeconds" preserve="all"/>
+		<type fullname="UnityEngine.MonoBehaviour" preserve="all"/>
+		<type fullname="UnityEngine.Behaviour" preserve="all"/>
+		<type fullname="UnityEngine.Component" preserve="all"/>
+		<type fullname="UnityEngine.Transform" preserve="all"/>
+		<type fullname="UnityEngine.Vector2" preserve="all"/>
+		<type fullname="UnityEngine.Vector3" preserve="all"/>
+		<type fullname="UnityEngine.Quaternion" preserve="all"/>
+		<type fullname="UnityEngine.AnimationCurve" preserve="all"/>
+		<type fullname="UnityEngine.Ray" preserve="all"/>
+		<type fullname="UnityEngine.Time" preserve="all"/>
+		<type fullname="UnityEngine.Renderer" preserve="all"/>
+		<type fullname="UnityEngine.Color" preserve="all"/>
+		<type fullname="UnityEngine.MeshRenderer" preserve="all"/>
+		<type fullname="UnityEngine.SkinnedMeshRenderer" preserve="all"/>
+		<type fullname="UnityEngine.SpriteRenderer" preserve="all"/>
+		<type fullname="UnityEngine.Screen" preserve="all"/>
+		<type fullname="UnityEngine.Events.UnityEvent" preserve="all"/>
+		<type fullname="UnityEngine.Mathf" preserve="all"/>
+		<type fullname="UnityEngine.PlayerPrefs" preserve="all"/>
+		<type fullname="UnityEngine.Random" preserve="all"/>
+		<type fullname="UnityEngine.Camera" preserve="all"/>
+		<type fullname="UnityEngine.Keyframe" preserve="all"/>
+		<type fullname="UnityEngine.Texture2D" preserve="all"/>
+		<type fullname="UnityEngine.U2D.SpriteAtlas" preserve="all"/>
+		<type fullname="UnityEngine.RectTransform" preserve="all"/>
+		
+	</assembly>
+
+	<assembly fullname="UnityEngine.AnimationModule">
+	    <type fullname="UnityEngine.Animation" preserve="all"/>
+		<type fullname="UnityEngine.AnimationClip" preserve="all"/>
+		<type fullname="UnityEngine.Animator" preserve="all"/>
+		
+	</assembly>
+
+	<assembly fullname="UnityEngine.PhysicsModule">
+	    <type fullname="UnityEngine.Collider" preserve="all"/>
+		<type fullname="UnityEngine.BoxCollider" preserve="all"/>
+		<type fullname="UnityEngine.CapsuleCollider" preserve="all"/>
+		<type fullname="UnityEngine.SphereCollider" preserve="all"/>
+		
+	</assembly>
+
+	<assembly fullname="UnityEngine.AudioModule">
+	    <type fullname="UnityEngine.AudioSource" preserve="all"/>
+		<type fullname="UnityEngine.AudioClip" preserve="all"/>
+		
+	</assembly>
+
+	<assembly fullname="UnityEngine.TextRenderingModule">
+	    <type fullname="UnityEngine.TextAnchor" preserve="all"/>
+		<type fullname="UnityEngine.Font" preserve="all"/>
+		
+	</assembly>
+
+	<assembly fullname="UnityEngine.ParticleSystemModule">
+	    <type fullname="UnityEngine.ParticleSystem" preserve="all"/>
+		<type fullname="UnityEngine.ParticleSystemRenderer" preserve="all"/>
+		
+	</assembly>
+
+	<assembly fullname="mscorlib">
+	    <type fullname="System.Collections.Generic.List`1[System.Int32]" preserve="all"/>
+		<type fullname="System.Collections.Generic.List`1[System.String]" preserve="all"/>
+		<type fullname="System.Collections.Generic.List`1[System.Object]" preserve="all"/>
+		<type fullname="System.Collections.Generic.List`1[DG.Tweening.Tween]" preserve="all"/>
+		<type fullname="System.Collections.Generic.Dictionary`2[System.String,System.Int32]" preserve="all"/>
+		<type fullname="System.DateTime" preserve="all"/>
+		
+	</assembly>
+
+	<assembly fullname="Assembly-CSharp">
+	    <type fullname="TcpLcClient" preserve="all"/>
+		<type fullname="EventID" preserve="all"/>
+		<type fullname="LuaManager" preserve="all"/>
+		<type fullname="NetworkManager" preserve="all"/>
+		<type fullname="TcpLcClient+NetworkStatus" preserve="all"/>
+		<type fullname="ResourceManager" preserve="all"/>
+		<type fullname="CorotineManager" preserve="all"/>
+		<type fullname="ResourceBase" preserve="all"/>
+		<type fullname="FishManager" preserve="all"/>
+		<type fullname="FishLuaBehaviour" preserve="all"/>
+		<type fullname="FishLuaBehaviour+FishStatus" preserve="all"/>
+		<type fullname="EventManager" preserve="all"/>
+		<type fullname="UIManager" preserve="all"/>
+		<type fullname="UIEventScript" preserve="all"/>
+		<type fullname="UIMiniEventScript" preserve="all"/>
+		<type fullname="UITimerScript" preserve="all"/>
+		<type fullname="UIFormScript" preserve="all"/>
+		<type fullname="TimerManager" preserve="all"/>
+		<type fullname="AtlasManager" preserve="all"/>
+		<type fullname="FileManager" preserve="all"/>
+		<type fullname="PoissonDiskSample" preserve="all"/>
+		<type fullname="AnimationCurveConfig" preserve="all"/>
+		<type fullname="UpdateManager" preserve="all"/>
+		<type fullname="UpdateManager+UpdateItem" preserve="all"/>
+		<type fullname="RenderConfig" preserve="all"/>
+		<type fullname="UIListScript" preserve="all"/>
+		<type fullname="UIListElementScript" preserve="all"/>
+		<type fullname="GlobalConfigManager" preserve="all"/>
+		<type fullname="StartUpSystem" preserve="all"/>
+		<type fullname="VersionUpdateManager" preserve="all"/>
+		<type fullname="GameResVersionInfo" preserve="all"/>
+		<type fullname="GameVersionStatus" preserve="all"/>
+		<type fullname="ShakeCamera" preserve="all"/>
+		<type fullname="Spine.Unity.SkeletonAnimation" preserve="all"/>
+		<type fullname="Spine.AnimationState" preserve="all"/>
+		<type fullname="Spine.TrackEntry" preserve="all"/>
+		<type fullname="Spine.Unity.SkeletonGraphic" preserve="all"/>
+		
+	</assembly>
+
+	<assembly fullname="UnityEngine.UI">
+	    <type fullname="UnityEngine.UI.CanvasScaler" preserve="all"/>
+		<type fullname="UnityEngine.UI.Button" preserve="all"/>
+		<type fullname="UnityEngine.UI.Button+ButtonClickedEvent" preserve="all"/>
+		<type fullname="UnityEngine.UI.Text" preserve="all"/>
+		<type fullname="UnityEngine.UI.Slider" preserve="all"/>
+		<type fullname="UnityEngine.UI.Slider+SliderEvent" preserve="all"/>
+		<type fullname="UnityEngine.UI.Toggle" preserve="all"/>
+		<type fullname="UnityEngine.UI.ScrollRect" preserve="all"/>
+		<type fullname="UnityEngine.UI.RawImage" preserve="all"/>
+		<type fullname="UnityEngine.UI.Image" preserve="all"/>
+		<type fullname="UnityEngine.UI.InputField" preserve="all"/>
+		<type fullname="UnityEngine.UI.HorizontalLayoutGroup" preserve="all"/>
+		
+	</assembly>
+
+	<assembly fullname="UnityEngine.UIModule">
+	    <type fullname="UnityEngine.Canvas" preserve="all"/>
+		<type fullname="UnityEngine.CanvasGroup" preserve="all"/>
+		
+	</assembly>
+
+	<assembly fullname="DOTween">
+	    <type fullname="DG.Tweening.AutoPlay" preserve="all"/>
+		<type fullname="DG.Tweening.AxisConstraint" preserve="all"/>
+		<type fullname="DG.Tweening.Ease" preserve="all"/>
+		<type fullname="DG.Tweening.LogBehaviour" preserve="all"/>
+		<type fullname="DG.Tweening.LoopType" preserve="all"/>
+		<type fullname="DG.Tweening.PathMode" preserve="all"/>
+		<type fullname="DG.Tweening.PathType" preserve="all"/>
+		<type fullname="DG.Tweening.RotateMode" preserve="all"/>
+		<type fullname="DG.Tweening.ScrambleMode" preserve="all"/>
+		<type fullname="DG.Tweening.TweenType" preserve="all"/>
+		<type fullname="DG.Tweening.UpdateType" preserve="all"/>
+		<type fullname="DG.Tweening.DOTween" preserve="all"/>
+		<type fullname="DG.Tweening.DOVirtual" preserve="all"/>
+		<type fullname="DG.Tweening.EaseFactory" preserve="all"/>
+		<type fullname="DG.Tweening.Tweener" preserve="all"/>
+		<type fullname="DG.Tweening.Tween" preserve="all"/>
+		<type fullname="DG.Tweening.Sequence" preserve="all"/>
+		<type fullname="DG.Tweening.TweenParams" preserve="all"/>
+		<type fullname="DG.Tweening.Core.ABSSequentiable" preserve="all"/>
+		<type fullname="DG.Tweening.Core.TweenerCore`3[UnityEngine.Vector3,UnityEngine.Vector3,DG.Tweening.Plugins.Options.VectorOptions]" preserve="all"/>
+		<type fullname="DG.Tweening.TweenExtensions" preserve="all"/>
+		<type fullname="DG.Tweening.TweenSettingsExtensions" preserve="all"/>
+		<type fullname="DG.Tweening.ShortcutExtensions" preserve="all"/>
+		
+	</assembly>
+
+</linker>

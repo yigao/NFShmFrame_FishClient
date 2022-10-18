@@ -1,0 +1,15 @@
+package RoomConfig_1001;
+
+message RoomConfig_1001Data{
+repeated RoomConfig_1001 RoomConfig_1001List = 1;
+}
+
+message RoomConfig_1001{
+optional int32 id = 1[default=0];
+optional string roomName = 2[default=''];
+optional int32 roomMoney = 3[default=0];
+optional string roomRes = 4[default=''];
+optional int32 autoDeskChair = 5[default=0];
+optional int32 deskCount = 6[default=0];
+optional int32 chairCount = 7[default=0];
+}

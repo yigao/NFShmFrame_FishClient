@@ -1,0 +1,18 @@
+package GunConfig_2002;
+
+message GunConfigData{
+repeated GunConfig GunConfigList = 1;
+}
+
+message GunConfig{
+optional int32 id = 1[default=0];
+optional string normalGunRes = 2[default=''];
+optional string normalBulletRes = 3[default=''];
+optional string normalNetRes = 4[default=''];
+optional string doubleGunRes = 5[default=''];
+optional string doubleBulletRes = 6[default=''];
+optional string doubleNetRes = 7[default=''];
+optional int32 shootAudio = 8[default=0];
+optional int32 hitFishAuio = 9[default=0];
+optional int32 makeUpAudio = 10[default=0];
+}

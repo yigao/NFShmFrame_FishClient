@@ -1,0 +1,12 @@
+//package GameConfigData;
+
+message GameValueConfigData{
+repeated GameValueConfig GameValueConfigList = 1;
+}
+
+message GameValueConfig{
+optional int32 id = 1[default=0];
+optional int32 value = 2[default=0];
+optional int32 room_id = 3[default=0];
+optional int32 gun_id = 4[default=0];
+}

@@ -1,0 +1,13 @@
+package PlusTipsEffectConfig_2001;
+
+message PlusTipsEffectConfigData{
+repeated PlusTipsEffectConfig PlusTipsEffectConfigList = 1;
+}
+
+message PlusTipsEffectConfig{
+optional int32 id = 1[default=0];
+optional string plusTipsResource = 2[default=''];
+optional float plusTipsDelayTime = 3[default=0];
+optional float plusTipsShowTime = 4[default=0];
+optional int32 plusTipsShowAudio = 5[default=0];
+}

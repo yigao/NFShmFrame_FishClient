@@ -1,0 +1,113 @@
+package Link_Msg;
+
+enum Proto_Link_CMD {
+	NF_CS_MSG_EnterGameReq   			=1019;		//进入游戏
+	NF_SC_MSG_EnterGameRsp   			=1020;
+	NF_CS_MSG_ExitGameReq    			=1023;		//退出游戏
+	NF_SC_MSG_ExitGameRsp    			=1024;
+	NF_CS_MSG_GameStatusReq 			=10001; 	//游戏状态请求
+	NF_SC_MSG_GameStatusRsp 			=10002; 	//游戏状态返回
+	NF_SCMSG_SystemError 				=11001; 	//系统错误码
+	NF_CS_MSG_FaFaFaPlayReq 			=10011; 	//发发发下注Play请求
+	NF_SC_MSG_FaFaFaPlayRsp 			=10012; 	//发发发下注Play返回
+	NF_CS_MSG_AccountReq    			=10013; 	//收分请求
+	NF_SC_MSG_AccountRsp    			=10014; 	//收分返回
+	
+}
+
+
+
+message EnterGameReq
+{
+	optional uint32 game_id   = 1;			//游戏id
+	optional uint32 room_id   = 2;			//房间id
+	optional uint32 desk_id   = 3;			//桌子id
+	optional uint32 chair_id  = 4;			//座位id
+	optional uint32 proxy_id  = 5;			//服务端占用位
+}
+
+
+message EnterGameRsp
+{
+	optional uint32 result         = 1;			//结果码
+	optional uint32 chair_count    = 2;
+	optional uint32 my_chair_id    = 3;
+	optional uint32 game_id        = 4;
+	optional uint32 room_id        = 5;
+	optional uint32 background_index = 6;		//当前正在使用的场景ID
+	optional uint32 game_bus_id    = 7;
+	
+}
+
+
+message ExitGameReq
+{
+	optional uint32 reserved = 1;  
+}
+
+message ExitGameRsp
+{
+	optional uint32 exit_type   = 1;   //0-退出失败(或者状态不对/玩家不在游戏中之类);  1-退出成功
+}
+
+
+
+message GameStatusReq
+{
+	optional int32 gameId = 1; //游戏ID
+}
+
+message GameStatusRsp
+{
+	optional int32 gameType = 1;     //游戏当时所在的状态 0-主游戏 1-免费游戏 2-小玛丽 其它 3 4 ...
+	repeated int64 chipScores = 2;   //下注值列表
+	repeated int64 jacketPots = 3;   //彩金值列表
+	optional int32 curChipIndex = 4; //当前下注序号
+	optional int32 userId = 5;       //玩家Id
+	optional string userName = 6;    //玩家名字
+	optional int64 userMoney = 7;   //玩家的钱
+}
+
+
+
+message SystemError {
+ optional int32 errorType = 1;     //错误类型 0-无错  1-状态错误
+ optional int32 curGameStatus = 2; //0-主游戏  1-免费游戏
+}
+
+
+
+message FaFaFaPlayReq
+{
+	optional int32 chipIndex = 1;  //压注索引
+}
+
+
+message FaFaFaPlayRsp
+{
+    optional int32  errorcode     = 1; //错误码 0-成功
+    optional int64 chipScore      = 2; //压注分数
+	optional int32 winType        = 3; //中奖类型
+	optional int32 winIconId      = 4; //中奖的图标
+	optional int64 winScore       = 5; //本次赢的分数
+	optional int64 totalWinScore  = 6; //累加赢的分数
+	optional int64 userScore     = 7; //用户身上的钱
+}
+
+
+message FaFaFaAccountReq
+{
+    optional int32 Reserved = 1;  //保留
+}
+
+
+message FaFaFaAccountRsp
+{
+    optional int32  errorcode     = 1; //错误码 0-成功
+	optional int64  curWinScore   = 2; //本次赢的分数
+	optional int64  totalWinScore = 3; //总赢分数
+	optional int64 userScore     = 4; //用户身上的钱
+}
+
+
+

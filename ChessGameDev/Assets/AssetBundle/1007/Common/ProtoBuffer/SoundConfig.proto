@@ -1,0 +1,11 @@
+package SoundConfig_1007;
+
+message SoundConfigData{
+repeated SoundConfig SoundConfigList = 1;
+}
+
+message SoundConfig{
+optional int32 id = 1[default=0];
+optional string soundName = 2[default=''];
+optional string soundPath = 3[default=''];
+}

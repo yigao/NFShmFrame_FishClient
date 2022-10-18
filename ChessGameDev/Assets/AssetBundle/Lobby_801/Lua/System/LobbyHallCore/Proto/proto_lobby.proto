@@ -1,0 +1,105 @@
+package proto_lobby;
+
+// 命令字
+enum Proto_LOBBY_CS_CMD {
+
+  NF_CS_MSG_PlayerPhoneAutoCodeReq = 1130; //玩家请求手机验证码
+  NF_SC_MSG_PlayerPhoneAutoCodeRsp = 1131; //玩家请求手机验证码
+
+  NF_CS_MSG_PlayerCheckPhoneCodeReq = 1132; //玩家校验手机验证码
+  NF_SC_MSG_PlayerCheckPhoneCodeRsp = 1133; //玩家校验手机验证码
+
+  NF_CS_MSG_ChangeFaceReq = 1134; //修改头像 Proto_CSChangeFaceReq
+  NF_SC_MSG_ChangeFaceRsp = 1135; //修改头像返回 Proto_SCChangeFaceRsp
+  
+  NF_CS_MSG_BIND_PHONE_REQ = 1138; //绑定手机号码
+  NF_CS_MSG_BIND_PHONE_RSP = 1139; //绑定手机号码
+  
+  NF_SC_MSG_MoneyChangeNotify = 1030; //更新大厅的金币
+
+  NF_SC_MSG_PaoMaDengNotify = 1031; //跑马灯
+}
+
+
+//修改头像 NF_CS_MSG_ChangeFaceReq = 1116;
+message Proto_CSChangeFaceReq
+{
+  optional uint32 face_id = 1;
+}
+
+//修改头像返回 NF_SC_MSG_ChangeFaceRsp = 1117;
+message Proto_SCChangeFaceRsp
+{
+  optional int32 result = 1;//0:success !=0 fail
+  optional int32 face_id = 2;
+}
+
+//NF_CS_MSG_PlayerPhoneAutoCodeReq = 1130; //玩家请求手机验证码
+message Proto_CS_Player_PhoneAutoCodeReq
+{
+  optional uint64 phone_num = 1;
+  optional uint32 code_type = 2; //4 绑定手机 5 修改修改银行密码
+}
+
+//NF_SC_MSG_PlayerPhoneAutoCodeRsp = 1131; //玩家请求手机验证码
+message Proto_SC_Player_PhoneAutoCodeRsp
+{
+  optional int32 result = 1;
+  optional uint64 phone_num = 2;
+  optional uint32 code_type = 3; //4 绑定手机 5 修改修改银行密码
+}
+
+//NF_CS_MSG_PlayerCheckPhoneCodeReq = 1132; //玩家校验手机验证码
+message Proto_CS_Player_CheckPhoneCodeReq
+{
+  optional uint64 phone_num = 1;
+  optional uint32 auth_code = 2;
+}
+
+//NF_SC_MSG_PlayerCheckPhoneCodeRsp = 1133; //玩家校验手机验证码
+message Proto_SC_Player_CheckPhoneCodeRsp
+{
+  optional int32 result = 1;
+  optional uint64 phone_num = 2;
+  optional uint32 code_type = 3; //4 绑定手机 5 修改修改银行密码
+}
+
+//NF_CS_MSG_BIND_PHONE_REQ = 1138; //绑定手机号码
+message Proto_CS_Player_BindPhoneReq
+{
+  optional uint64 phone_num = 1;
+  optional string nick_name = 2;
+  optional string password = 3;
+  optional string device_id = 4;
+}
+
+//NF_CS_MSG_BIND_PHONE_RSP = 1139; //绑定手机号码
+message Proto_SC_Player_BindPhoneRsp
+{
+  optional int32 result = 1;
+  optional uint64 phone_num = 2;
+  optional string nick_name = 3;
+}
+
+//NF_SC_MSG_MoneyChangeNotify = 1030;
+message MoneyChangeNotify
+{
+  optional uint64 cur_money = 1;
+  optional uint64 cur_bank_money = 2;
+}
+
+//NF_SC_MSG_PaoMaDengNotify = 1031;
+message OnePaoMaDengInfo
+{
+  optional string user_name = 1;
+  optional uint32 game_id = 2;
+  optional string game_name = 3;
+  optional uint32 room_id = 4;
+  optional string room_name = 5;
+  optional uint64 win_jetton = 6;
+}
+
+message Proto_SCPaoMaDengNotify
+{
+  repeated OnePaoMaDengInfo info = 1;
+}

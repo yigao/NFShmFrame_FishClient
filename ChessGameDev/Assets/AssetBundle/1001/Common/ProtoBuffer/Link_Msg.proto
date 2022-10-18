@@ -1,0 +1,188 @@
+package Link_Msg;
+
+enum Proto_Link_CMD {
+	NF_CS_MSG_EnterGameReq   			=1019;		//进入游戏
+	NF_SC_MSG_EnterGameRsp   			=1020;
+	NF_CS_MSG_ExitGameReq    			=1023;		//退出游戏
+	NF_SC_MSG_ExitGameRsp    			=1024;
+	NF_CS_MSG_GameStatusReq 			=10001; 	//游戏状态请求
+	NF_SC_MSG_GameStatusRsp 			=10002; 	//游戏状态返回
+	NF_CS_MSG_LinkPlayReq 				=10011;		//请求游戏结果
+	NF_SC_MSG_LinkPlayRsp 				=10012;
+	NF_SC_MSG_EnterMiniGameReq 			=10013; 	//进入小游戏请求
+	NF_SC_MSG_FinishMiniGameRsp			=10016; 	//小游戏结束
+	NF_SC_MSG_EnterFreeGameRsp 			=10014; 	//进入免费游戏返回
+	NF_SCMSG_SystemError 				=11001; 	//系统错误码
+	NF_SC_MSG_EnterMaryGameRsp 			=10018; 	//进入小玛丽游戏返回
+	NF_CS_MSG_MiniMaryGamePlayReq 		=10019;		//小玛丽游戏play请求
+	NF_SC_MSG_MiniMaryGamePlayRsp 		=10020;		//小玛丽游戏play返回
+	NF_SC_MSG_UpdateJackpotRsp 			=11000; 	//刷新Jackpot
+}
+
+enum Game_TYPE {
+	GameType_Main = 0;
+	GameType_Free = 1;
+	GameType_Mary = 2;
+
+}
+
+
+message EnterGameReq
+{
+	optional uint32 game_id   = 1;			//游戏id
+	optional uint32 room_id   = 2;			//房间id
+	optional uint32 desk_id   = 3;			//桌子id
+	optional uint32 chair_id  = 4;			//座位id
+	optional uint32 proxy_id  = 5;			//服务端占用位
+}
+
+
+message EnterGameRsp
+{
+	optional uint32 result         = 1;			//结果码
+	optional uint32 chair_count    = 2;
+	optional uint32 my_chair_id    = 3;
+	optional uint32 game_id        = 4;
+	optional uint32 room_id        = 5;
+	optional uint32 background_index = 6;		//当前正在使用的场景ID
+	optional uint32 game_bus_id    = 7;
+	
+}
+
+
+message ExitGameReq
+{
+	optional uint32 reserved = 1;  
+}
+
+message ExitGameRsp
+{
+	optional uint32 exit_type   = 1;   //0-退出失败(或者状态不对/玩家不在游戏中之类);  1-退出成功
+}
+
+
+
+message GameStatusReq
+{
+	optional int32 gameId = 1; //游戏ID
+}
+
+message GameStatusRsp
+{
+	optional int32 gameType = 1;     //游戏当时所在的状态 0-主游戏 1-免费游戏 2-小玛丽 其它 3 4 ...
+	repeated int64 chipScores = 2;   //下注值列表
+	optional int32 curChipIndex = 3; //当前下注序号
+	optional int32 userId = 4;       //玩家Id
+	optional string userName = 5;    //玩家名字
+	optional int64 userMoney = 6;   //玩家的钱
+}
+
+
+message LinkPlayReq {
+	optional int32 chipIndex = 1;
+	optional int32 gameType = 2;
+}
+
+message LinkPlayRsp {
+	message Col {
+		repeated int32 row = 1; 		//列-行二维坐标方式
+	} 
+	message Point {
+		optional int32 posX = 1;		//列
+		optional int32 posY = 2;		//行
+	}
+	message PrizeLine {
+		optional int32 lineId     = 1;
+		optional int32 winIconId  = 2;
+		optional int32 openType   = 3;
+		optional int32 winMul     = 4;
+		optional int64 score      = 5;
+		repeated Point linePoints = 6; 
+	}
+	
+	repeated Col cols = 1;
+	optional int64 chipScore  = 2;		//下注分
+	optional int64 winScore = 3;		//赢分
+	optional int64 userScore = 4;		//总分
+	optional int32 lineCount = 5;
+	repeated PrizeLine prizeLines = 6;
+	optional int32 gameType        = 7;  //当前游戏类型
+	optional int32 triggerMiniGame = 8;  //触发的小游戏ID
+	optional int32 freeGameCount   = 9;  //免费游戏总次数
+	optional int32 freeGameIndex   = 10; //免费游戏当前次数
+	optional int64 freeGameScore   = 11; //免费游戏累加分数
+}
+
+
+message EnterMiniGameReq {
+	optional int32 gameType  = 1; //游戏类型
+}
+
+message EnterFreeGameRsp {
+	optional int32 gameType        = 1;  //游戏类型
+	optional int32 freeGameCount   = 2;  //免费游戏总次数
+	optional int32 freeGameIndex   = 3;  //免费游戏当前次数
+	optional int64 freeGameScore   = 4;  //免费游戏累加分数
+}
+
+message FinishMiniGameRsp {
+	optional int32 curGameType  = 1; //当前游戏类型
+	optional int32 nextGameType = 2; //下一个游戏类型
+	optional int64 winGameScore = 3; //本次赢的分数
+	optional int64 userScore   = 4; //用户身上的钱
+
+}
+
+
+message SystemError {
+ optional int32 errorType = 1;     //错误类型 0-无错  1-状态错误
+ optional int32 curGameStatus = 2; //0-主游戏  1-免费游戏
+}
+
+
+message EnterMaryGameRsp {
+	repeated int32 outerIcons      = 1;  //外圈图标初始化值
+	repeated int32 iconMuls        = 2;  //图标倍数值
+	optional int32 totalPlayCount  = 3;  //总次数
+	optional int32 leftPlayCount   = 4;  //剩余次数
+	optional int64 chipScore     = 5; //压注分数
+	optional int64 mainGameScore = 6; //主游戏赢分
+	optional int64 maryGameScore = 7; //小玛丽游戏累加分数
+	optional int64 userScore    = 8; //用户身上的钱
+}
+
+
+message MiniMaryGamePlayReq {
+	optional int32 gameType  = 1;  //请求所在的游戏类型  0-主游戏 1-免费游戏  其它 2 3 4 ...
+}
+
+
+message MiniMaryGamePlayRsp {
+	optional int32 outerIconId = 1; //外圈图标Id
+	repeated int32 innerIconId = 2; //里面四个图标
+	repeated int32 innerWinIndex = 3;	//中间中奖信息
+	optional int64 chipScore     = 4; //压注分数
+	optional int64 winScore      = 5; //本次赢的分数
+	optional int64 maryGameScore = 6; //小玛丽游戏累加分数
+	optional int64 userScore    = 7; //用户身上的钱
+	optional int32 gameType        = 8;  //本次自己游戏类型
+	optional int32 totalPlayCount  = 9;  //小玛丽游戏总次数
+	optional int32 leftPlayCount    = 10;  //小玛丽游戏剩余次数
+	
+}
+
+
+message UpdateJackpotRsp
+{
+  message Jackpot {
+      optional int32 jackpotType       = 1; //类型: 1-小奖, 2-中奖, 3-大奖, 4-巨奖
+    optional int64 jackpotStartValue = 2; //开始值
+    optional int64 jackpotAddValue   = 3; //增加值
+    optional int32 jackpotAddTime    = 4; //增加时间/秒
+  }
+
+  repeated Jackpot JackpotValues = 1;
+}
+
+
+

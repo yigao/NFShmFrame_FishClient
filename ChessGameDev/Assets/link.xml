@@ -1,0 +1,17 @@
+<linker>
+   <assembly fullname="I18N">
+       <type fullname="I18N.Common.Manager" preserve="all"/>
+   </assembly>
+   <assembly fullname="I18N.CJK">
+       <type fullname="I18N.CJK.CP936" preserve="all"/>
+   </assembly>
+   <assembly fullname="ICSharpCode.SharpZipLib">
+	<type fullname="ICSharpCode.SharpZipLib.ZipInputStream" preserve="all"/>
+   </assembly>
+   
+   <assembly fullname="UnityEngine.ParticleSystemModule">
+	    <type fullname="UnityEngine.ParticleSystem" preserve="all"/>
+		<type fullname="UnityEngine.ParticleSystemRenderer" preserve="all"/>
+	</assembly>
+	
+</linker>

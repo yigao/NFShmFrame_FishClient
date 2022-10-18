@@ -1,0 +1,25 @@
+package DieEffectConfig_2003;
+
+message DieEffectConfigData{
+repeated DieEffectConfig DieEffectConfigList = 1;
+}
+
+message DieEffectConfig{
+optional int32 id = 1[default=0];
+optional int32 fishDieType = 2[default=0];
+optional float fishDelayTime = 3[default=0];
+optional float fishDurationTime = 4[default=0];
+optional float childFishBehaviorDelayTime = 5[default=0];
+optional float childFishBehaviorNormalTime = 6[default=0];
+optional string childFishLineRes = 7[default=''];
+optional float childFishLineDelyTime = 8[default=0];
+optional float childFishLineLifeTime = 9[default=0];
+repeated int32 showRewardRatio = 10;
+repeated int32 bigAwardTipsID = 11;
+repeated string dieEffectName = 12;
+repeated int32 dieEffectType = 13;
+repeated int32 dieEffectPositionFlag = 14;
+repeated float dieEffectDelyTime = 15;
+repeated float dieEffectLifeTime = 16;
+repeated string dieAudio = 17;
+}

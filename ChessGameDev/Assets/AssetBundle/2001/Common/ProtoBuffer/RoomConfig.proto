@@ -1,0 +1,15 @@
+package RoomConfig_2001;
+
+message RoomConfigData{
+repeated RoomConfig RoomConfigList = 1;
+}
+
+message RoomConfig{
+optional int32 id = 1[default=0];
+optional string roomName = 2[default=''];
+optional int32 roomMoney = 3[default=0];
+optional string roomRes = 4[default=''];
+optional int32 autoDeskChair = 5[default=0];
+optional int32 deskCount = 6[default=0];
+optional int32 chairCount = 7[default=0];
+}

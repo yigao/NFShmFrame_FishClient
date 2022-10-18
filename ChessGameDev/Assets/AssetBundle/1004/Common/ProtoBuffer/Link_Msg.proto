@@ -1,0 +1,235 @@
+package Link_Msg;
+
+enum Proto_Link_CMD {
+	NF_CS_MSG_EnterGameReq   			=1019;		//进入游戏
+	NF_SC_MSG_EnterGameRsp   			=1020;
+	NF_CS_MSG_ExitGameReq    			=1023;		//退出游戏
+	NF_SC_MSG_ExitGameRsp    			=1024;
+	NF_CS_MSG_GameStatusReq 			=10001; 	//游戏状态请求
+	NF_SC_MSG_GameStatusRsp 			=10002; 	//游戏状态返回
+	NF_CS_MSG_LinkPlayReq 				=10011;		//请求游戏结果
+	NF_SC_MSG_LinkPlayRsp 				=10012;
+	NF_SC_MSG_EnterMiniGameReq 			=10013; 	//进入小游戏请求
+	NF_SC_MSG_FinishMiniGameRsp			=10016; 	//小游戏结束
+	NF_SC_MSG_EnterFreeGameRsp 			=10014; 	//进入免费游戏返回
+	NF_SCMSG_SystemError 				=11001; 	//系统错误码
+	NF_SC_MSG_EnterMaryGameRsp 			=10018; 	//进入小玛丽游戏返回
+	NF_CS_MSG_MiniMaryGamePlayReq 		=10019;		//小玛丽游戏play请求
+	NF_SC_MSG_MiniMaryGamePlayRsp 		=10020;		//小玛丽游戏play返回
+	NF_SC_MSG_EnterGuessGameRsp 		=10030;		//进入猜大小游戏返回
+	NF_CS_MSG_GuessGamePlayReq 			=10031;  	//猜大小游戏Play
+	NF_SC_MSG_GuessGamePlayRsp 			=10032;  	//猜大小游戏Play返回
+	NF_CS_MSG_GuessGameUserExitReq 		=10033; 	//手动结束收分
+	NF_SC_MSG_EnterShuLaiBaoGameRsp 	=10040; 	//进入鼠来宝游戏返回
+	//鼠来宝游戏类似免费游戏，PlayReq和PlayRsp使用和主游戏一样的命令 10011  10012 ，  
+	//免费软件也是这么用的
+}
+
+enum Game_TYPE {
+	GameType_Main = 0;
+	GameType_Free = 1;
+	GameType_Mary = 2;
+
+}
+
+
+enum PrizeType
+{
+	PrizeType_Mul2        = 1; //数值2倍奖
+	PrizeType_Mul3        = 2; //数值3倍奖
+	PrizeType_Mul4        = 3; //数值4倍奖
+	PrizeType_Mul5        = 4; //数值5倍奖
+	PrizeType_Mul6        = 5; //数值6倍奖
+	PrizeType_Mul8        = 6; //数值8倍奖
+	PrizeType_Small       = 7; //小奖
+	PrizeType_Medium      = 8; //中奖
+	PrizeType_Big         = 9; //大奖
+	PrizeType_Mage        = 10;//巨奖
+	PrizeType_Profit2     = 11;//赢分2倍
+    PrizeType_Profit3     = 12;//赢分3倍	
+	PrizeType_BigProfit2  = 13;//大奖+赢分2倍
+	PrizeType_BigProfit3  = 14;//大奖+赢分3倍	
+	PrizeType_MageProfit2 = 15;//巨奖+赢分2倍
+	PrizeType_MageProfit3 = 16;//巨奖+赢分3倍	
+}
+
+
+message EnterGameReq
+{
+	optional uint32 game_id   = 1;			//游戏id
+	optional uint32 room_id   = 2;			//房间id
+	optional uint32 desk_id   = 3;			//桌子id
+	optional uint32 chair_id  = 4;			//座位id
+	optional uint32 proxy_id  = 5;			//服务端占用位
+}
+
+
+message EnterGameRsp
+{
+	optional uint32 result         = 1;			//结果码
+	optional uint32 chair_count    = 2;
+	optional uint32 my_chair_id    = 3;
+	optional uint32 game_id        = 4;
+	optional uint32 room_id        = 5;
+	optional uint32 background_index = 6;		//当前正在使用的场景ID
+	optional uint32 game_bus_id    = 7;
+	
+}
+
+
+message ExitGameReq
+{
+	optional uint32 reserved = 1;  
+}
+
+message ExitGameRsp
+{
+	optional uint32 exit_type   = 1;   //0-退出失败(或者状态不对/玩家不在游戏中之类);  1-退出成功
+}
+
+
+
+message GameStatusReq
+{
+	optional int32 gameId = 1; //游戏ID
+}
+
+message Col {
+		repeated int32 row = 1; 		//列-行二维坐标方式 	5-10列为图标对应关系值（数值1-10是预留类型
+	} 
+	
+message Point {
+		optional int32 posX = 1;		//列
+		optional int32 posY = 2;		//行
+	}
+	
+	
+message ExtScore {
+	optional Point point=1;
+	optional int64 score=2;
+}
+
+
+message GameStatusRsp
+{
+	message PrizeItem
+	{
+		optional int64 ValuePrize2  = 1;  //数值2倍奖
+		optional int64 ValuePrize3  = 2;  //数值3倍奖
+		optional int64 ValuePrize4  = 3;  //数值4倍奖
+		optional int64 ValuePrize5  = 4;  //数值5倍奖
+		optional int64 ValuePrize6  = 5;  //数值6倍奖
+		optional int64 ValuePrize8  = 6;  //数值8倍奖
+		optional int64 SmallPrize   = 7;  //小奖
+		optional int64 MediumPrize  = 8;  //中奖
+		optional int64 BigPrize     = 9;  //大奖
+		optional int64 MagePrize   = 10;  //巨奖
+	}
+	
+	optional int32 gameType     = 1;   //游戏当时所在的状态 0-主游戏 1-免费游戏 2-小玛丽 其它 3 4 ...
+	repeated int64 chipScores   = 2;   //下注值列表
+	optional int32 curChipIndex = 3;   //当前下注序号,从1开始
+	optional int32 userId       = 4;   //玩家Id
+	optional string userName    = 5;   //玩家名字
+	optional int64 userMoney   = 6;   //玩家的钱
+	
+	repeated PrizeItem PrezeItems = 7;   //数值奖和小中大巨奖 和第2项对应; 鼠来宝使用
+	repeated int32 RollerMousePrizeTypes       = 8;//老鼠滚轮中奖类型，就是滚轮图标; 值是PrizeType定义的值；
+	repeated int32 RollerGoldenMousePrizeTypes = 9;//金鼠滚轮中奖类型，就是滚轮图标; 值是PrizeType定义的值；
+	repeated Col cols = 10;							//图标结果  后面5列对应值-1为无效值 鞭炮位置1-10为类型值，大于10是得分值
+	repeated Point freezedPos = 11; //需要冻结的位置
+}
+
+
+message LinkPlayReq {
+	optional int32 chipIndex = 1;
+	optional int32 gameType = 2;
+}
+
+message LinkPlayRsp {
+	
+	
+	message PrizeLine {
+		optional int32 lineId     = 1;
+		optional int32 winIconId  = 2;
+		optional int32 openType   = 3;
+		optional int32 winMul     = 4;
+		optional int64 score      = 5;
+		repeated Point linePoints = 6; 
+	}
+	
+	message MouseWheelPrize
+	{
+		optional Point PrizePos   = 1;  //神秘图标坐标
+		optional int32 PrizeIndex = 2;  //转轮里中奖Index
+		optional int64 PrizeValue = 3;  //中奖分数
+		optional int32 WheelType  = 4;  //转轮类型 1-老鼠滚轮  2-金鼠滚轮
+	}
+	
+	repeated Col cols = 1;				//图标结果  后面5列对应值-1为无效值 鞭炮位置1-10为类型值，大于10是得分值
+	optional int64 chipScore  = 2;		//下注分
+	optional int64 winScore = 3;		//赢分
+	optional int64 userScore = 4;		//总分
+	optional int32 lineCount = 5;
+	repeated PrizeLine prizeLines = 6;
+	optional int32 gameType        = 7;  //当前游戏类型
+	optional int32 triggerMiniGame = 8;  //触发的小游戏ID
+	optional int32 freeGameCount   = 9;  //免费游戏总次数
+	optional int32 freeGameIndex   = 10; //免费游戏当前次数
+	optional int64 freeGameScore   = 11; //免费游戏累加分数
+	repeated MouseWheelPrize mouseWheelPrizes = 12; //鼠来宝神秘图标奖
+	repeated Point freezedPos = 13; //需要冻结的位置
+}
+
+
+message EnterMiniGameReq {
+	optional int32 gameType  = 1; //游戏类型
+}
+
+message EnterFreeGameRsp {
+	optional int32 gameType        = 1;  //游戏类型
+	optional int32 freeGameCount   = 2;  //免费游戏总次数
+	optional int32 freeGameIndex   = 3;  //免费游戏当前次数
+	optional int64 freeGameScore   = 4;  //免费游戏累加分数
+}
+
+message FinishMiniGameRsp {
+	optional int32 curGameType  = 1; //当前游戏类型
+	optional int32 nextGameType = 2; //下一个游戏类型
+	optional int64 winGameScore = 3; //本次赢的分数
+	optional int64 userScore   = 4; //用户身上的钱
+	optional int32 nextGameCount   = 5;  //下一个游戏总次数
+	optional int32 nextGameCurPlayCount   = 6;  //下一个游戏当前次数
+	optional int64 nextGameTotalScore   = 7;  //下一个游戏累加分数
+	repeated ExtScore extScore	= 8;		//SLB每个位置的得分
+}
+
+
+//鼠来宝特殊小游戏
+message EnterShuLaiBaoGameRsp 
+{	
+	optional int32 gameType             = 1;  //游戏类型
+	optional int32 ShuLaiBaoGameCount   = 2;  //鼠来宝游戏总次数
+	optional int32 ShuLaiBaoGameIndex   = 3;  //鼠来宝游戏当前次数
+	optional int64 ShuLaiBaoGameScore   = 4;  //鼠来宝游戏累加分数
+}
+
+
+
+message SystemError {
+ optional int32 errorType = 1;     //错误类型 0-无错  1-状态错误
+ optional int32 curGameStatus = 2; //0-主游戏  1-免费游戏
+}
+
+
+
+
+
+
+message GuessGameUserExitReq
+{
+    optional int32 reserved=1;
+}
+
+
+

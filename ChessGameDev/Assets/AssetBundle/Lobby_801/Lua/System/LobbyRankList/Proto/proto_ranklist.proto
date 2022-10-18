@@ -1,0 +1,44 @@
+syntax = "proto2";
+package proto_ranklist;
+
+enum Proto_RankList_CMD {
+	NF_CS_GET_COMMON_RANK_REQ 		= 1200; 	//请求排行榜列表
+    NF_CS_GET_COMMON_RANK_RSP 		= 1201;		//排行榜列表数据返回	
+};
+
+////////////////////////////////rank///////////////////////////////////////////////
+//NF_CS_GET_COMMON_RANK_REQ	  = 1200;
+message Proto_CSGetCommonRankReq
+{
+	optional int32 rank_type = 1; //1 gold
+	optional int32 rank_from = 2;
+	optional int32 rank_to	 = 3;
+}
+
+//NF_CS_GET_COMMON_RANK_RSP	  = 1201;
+message Proto_SCGetCommonRankRsp
+{
+	optional int32 result = 1;
+	optional int32 rank_type = 2; //1 gold
+	repeated RankInfo rank_list         = 3;
+	required int32	my_rank           = 4; //0表示没有排名，最高排名5000
+	required uint64	my_score           = 5;
+	required int32	rank_max          = 6;
+}
+
+message RankInfo
+{
+	optional int32                    rank            = 1;
+	optional uint64                   user_id         = 2;
+	optional string                   user_name       = 3[(yd_fieldoptions.field_bufsize)=64, (yd_fieldoptions.field_string_len)=64];
+	optional uint64					  score			  = 4;
+	optional uint32                   face_id         = 5;
+}
+
+enum enRankType
+{
+	E_RANK_TYPE_NONE            = 0;
+	E_RANK_TYPE_GOLD            = 1; 
+	E_RANK_TYPE_TODAY_WIN_GOLD  = 2;
+}
+////////////////////////////////rank///////////////////////////////////////////////

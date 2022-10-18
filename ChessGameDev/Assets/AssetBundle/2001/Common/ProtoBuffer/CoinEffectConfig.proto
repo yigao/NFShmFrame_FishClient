@@ -1,0 +1,15 @@
+package CoinEffectConfig_2001;
+
+message CoinEffectConfigData{
+repeated CoinEffectConfig CoinEffectConfigList = 1;
+}
+
+message CoinEffectConfig{
+optional int32 id = 1[default=0];
+optional string coinRes = 2[default=''];
+optional string coinAnimName = 3[default=''];
+optional float coinDelayTime = 4[default=0];
+optional int32 coinShowAudioID = 5[default=0];
+optional float coinFlyTime = 6[default=0];
+optional int32 coinFlyAudioID = 7[default=0];
+}

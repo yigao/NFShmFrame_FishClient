@@ -1,0 +1,419 @@
+package Fish_Msg
+
+
+enum Proto_Fish_CMD {
+	NF_CS_MSG_EnterGameReq   			=1019;		//进入游戏
+	NF_SC_MSG_EnterGameRsp   			=1020;
+	NF_CS_MSG_ExitGameReq    			=1023;		//退出游戏
+	NF_SC_MSG_ExitGameRsp    			=1024;
+	NF_CS_MSG_GameStatusReq				=10001;		//请求开始同步消息状态  11
+	NF_SC_MSG_GameStatusRsp				=10002;
+	NF_SC_MSG_UserStatusRsp				=10018;		//用户状态同步
+	NF_SC_MSG_FishListRsp				=10004;		//fish下发			
+	NF_CS_MSG_ShootBulletReq			=10005;		//上传子弹		
+	NF_SC_MSG_ShootBulletRsp			=10006;		//下发子弹		
+	NF_CS_MSG_HitfishReq				=10007;  	//上传打中鱼   
+	NF_SC_MSG_KillFishRsp				=10008;  	//下发打中鱼   
+	NF_CS_MSG_LockFishReq				=10009;		//锁定目标鱼
+	NF_SC_MSG_LockFishRsp				=10010;		
+	NF_CS_MSG_LockOnOffReq				=10011;		//锁定鱼开关
+	NF_SC_MSG_LockOnOffRsp				=10012;
+	NF_CS_MSG_AutoShootReq				=10013;		//自动开关
+	NF_SC_MSG_AutoShootRsp				=10014;
+	NF_CS_MSG_BulletSpeedReq			=10015;		//子弹速度
+	NF_SC_MSG_BulletSpeedRsp			=10016;
+	NF_CS_MSG_ChangeCannonReq			=10019;		//切换炮
+	NF_SC_MSG_ChangeCannonRsp			=10020;
+	NF_SC_MSG_UserMoneyRsp				=10022;		//刷新玩家的钱
+	NF_SC_MSG_ChangeSceneRsp			=10024;		//切换场景
+	NF_SC_MSG_FreezeFishesRsp			=10026;		//定屏鱼打死专用消息
+	NF_SC_MSG_UserEnterDeskRsp			=10028;		//玩家进入游戏
+	NF_SC_MSG_UserLeaveDeskRsp			=10030;		//玩家离开游戏
+	NF_FISH_CMD_DOUBLEGUNONOFF_RSP		=10032;		//双倍炮协议
+	NF_FISH_CMD_PROMPTINFO_RSP   		=10034;		//下发提示消息
+	
+	//小游戏协议
+	MSG_FishMiniGame_EnterMiniGameRsp = 10202; 		//进入小游戏回复
+	MSG_FishMiniGame_FinishMiniGameReq= 10203; 		//退出小游戏请求
+	MSG_FishMiniGame_FinishMiniGameRsp= 10204; 		//退出小游戏回复
+	
+	MSG_FishMiniGame_HaiShenResultReq = 10205; 		//海神小游戏结果请求
+	MSG_FishMiniGame_HaiShenResultRsp = 10206; 		//海神小游戏结果回复
+	
+	MSG_FishMiniGame_EnterGoldenBullRsp  = 10212; //进入旋转金牛
+	MSG_FishMiniGame_GoldenBullResultReq = 10213; //旋转金牛结果请求
+	MSG_FishMiniGame_GoldenBullResultRsp = 10214; //旋转金牛结果回复
+	
+	MSG_FishMiniGame_EnterCaiShenRsp     = 10222; //进入财神
+	
+}
+
+
+message GameStatusReq
+{
+	optional int32 gameId = 1; //游戏ID
+}
+
+message GameStatusRsp
+{
+	optional uint32 background_index = 1;
+	repeated CannonInfo cannonlist = 2;
+	repeated UserInfo   userlist   = 3;
+}
+
+
+enum ePromptInfoType
+{
+	eInfoType_YuChao_Come = 0;       //鱼潮
+	eInfoType_FishTip_Come = 1;       //提示鱼
+}
+
+message PromptInfoRsp   //提示信息
+{
+	optional uint32 infoType = 1; //提示信息类型
+	optional uint32 fishKindId = 2;   //配置表里的鱼id
+}
+
+message DoubleGunOnOffRsp
+{
+	optional uint32 chairId = 1;  //玩家座位号
+	optional uint32 onOff   = 2;  //双倍炮开关 1-开  0-关
+}
+
+
+message FishInfo {
+	optional uint32 usFishKind=1;   	//fishID
+	optional uint32 usFishID=2;    		//fishUID
+	repeated uint32 subFishKinds=3;		//子鱼列表
+	optional uint32 usTraceId=4;    	//轨迹ID
+	optional uint32 usStartIndex=5;		//开始轨迹点
+	optional uint32 usOffsetIndex=6;	//轨迹偏移点
+	optional int32 usOffsetPosX=7;		//轨迹点平移X
+	optional int32 usOffsetPoxY=8;		//轨迹点平移Y
+	optional uint32 usBirthDelay=9;  	//出鱼延时
+	optional uint32 usIsRedFish=10;  	//红鱼鱼王 1--红鱼 0--普通
+	optional uint32 usGroupId = 11; 
+}
+
+message FishListRsp {
+	repeated FishInfo Fishes=1;
+}
+
+
+message ShootBulletReq {
+ optional uint32 usBulletId=1;			//子弹ID
+ optional int32 sAngle=2;				//角度
+}
+
+
+message ShootBulletRsp {
+ optional int32 usBulletId=1;			//子弹ID
+ optional int32 sAngle=2;				//角度
+ optional int32 usSpeedIndex=3;			//速度index
+ optional int32 usIntervalIndex=4;		//间隔Index
+ optional int32 usLevelIndex=5;			//等级Index
+ optional int32 usChairId=6;			//座位号
+ optional int32 usErrorCode=7;			//错误码
+ optional int32 usProcUserChairId=8;	//真实玩家给机器人上传子弹的真实玩家座位号，真人玩家默认为-1，机器人给具体值>-1
+}
+
+
+message HitfishReq
+{
+ optional int32 fishId = 1;				//主鱼fishUID
+ optional int32 subFishId = 2;			//子鱼UID列表
+ optional int32 bulletid = 3; 
+ optional int32 usRobotChairId = 4;		//机器人的位置 
+}
+
+
+
+message KillFishRsp
+{
+ optional int32 bombUID      = 1;		//当前鱼所属的炸弹鱼UID  0表示非炸弹鱼
+ optional int32 mainFishUID  = 2;		//主鱼UID
+ optional int32 mainFishId   = 3;		//主鱼ID
+ optional int32 mainFishType = 4;		//主鱼类型
+ optional int32 mainMultiple = 5;		//主鱼的倍数
+ optional int32 mainScore    = 6;		//主鱼得分
+ optional int32 totalScore     = 7;		//总得分
+ optional int32 totalRatio     = 8;		//总倍率
+ optional int32 chairId        = 9; 	//座位号
+ optional int32 usErrorCode    = 10;		//错误码
+ optional int32 subFishCount   = 11;	//主鱼包含的子鱼个数
+ repeated KillFishRsp SubFishes = 12;	//子鱼列表
+ optional int32 bulletid = 13;	//杀死鱼的子弹ID
+}
+
+message AutoShootReq
+{
+ optional bool onOff = 1;
+}
+
+message AutoShootRsp
+{
+ optional int32 chairId = 1;
+ optional bool onOff = 2;
+ optional int32 usErrorCode=3;
+}
+
+message LockOnOffReq
+{
+ optional bool onOff = 1;
+}
+
+message LockOnOffRsp
+{
+ optional int32 chairId = 1;
+ optional bool onOff = 2;
+ optional int32 usErrorCode=3;
+}
+
+message LockFishReq
+{
+ optional int32 fishId = 1;			//锁定鱼的UID
+}
+
+message LockFishRsp
+{
+ optional int32 chairId = 1;
+ optional int32 fishId = 2;
+ optional int32 usErrorCode=3;
+}
+
+message BulletSpeedReq {
+ optional int32 usSpeedIndex=1;		//子弹速度Index
+ optional int32 usIntervalIndex=2;	//间隔Index
+}
+
+message BulletSpeedRsp {
+ optional int32 usChairId=1;		
+ optional int32 usSpeedIndex=2;
+ optional int32 usIntervalIndex=3;
+ optional int32 usErrorCode=4;
+}
+
+message CannonInfo
+{
+ optional uint32 cannon_id = 1;					//炮台ID
+ optional uint32 cannon_value = 2;				//炮值
+ optional uint32 cannon_value_gun_id = 3;		//
+}
+
+message UserInfo
+{
+ optional uint32 chair_id   = 1;				//座位号
+ optional string user_name  = 2;				//玩家名字
+ optional uint64 user_money = 3;				//玩家金额
+ optional uint32 cannon_id  = 4;				//当前炮台ID
+}
+
+
+
+message ChangeCannonReq
+{
+ optional uint32 cannon_id = 1;			//当前炮台ID
+}
+
+message ChangeCannonRsp
+{
+ optional uint32 cannon_id = 1;
+ optional uint32 chair_id = 3;
+}
+
+
+message UserMoneyRsp
+{
+ optional uint32 chair_id = 1;
+ optional uint64 user_money = 2;
+ 
+}
+
+
+message UserEnterDeskRsp
+{
+ optional UserInfo userInfo = 1;
+}
+
+message UserLeaveDeskRsp
+{
+ optional uint32 chair_id = 1;
+}
+
+enum eChangeSceneType
+{
+	eType_WaveTide = 1;        //切场景波浪
+	eInfoType_FishOutScne = 2; //鱼快速移除屏幕
+	eInfoType_ChangeSceneBG = 3; //切换场景的背景图
+}
+
+message ChangeSceneRsp
+{
+ optional uint32 scene_id = 1;				//场景ID
+ optional float  time_seconds = 2;			//场景过度时间
+ optional uint32 scene_change_type = 3; //切换场景类型
+}
+
+
+message FreezeFish
+{
+ optional uint32 fish_uid = 1;
+ optional uint32 fish_id  = 2;
+}
+
+message FreezeFishesRsp
+{
+ optional uint32 mainfish_uid  = 1;
+ optional uint32 mainfish_id   = 2;
+ optional uint32 mainFishType  = 3;
+ optional bool IsFreeze        = 4;			//是否冻结
+ repeated FreezeFish fishes    = 5;			//冻结鱼列表
+}
+
+
+
+
+message EnterGameReq
+{
+	optional uint32 game_id   = 1;			//游戏id
+	optional uint32 room_id   = 2;			//房间id
+	optional uint32 desk_id   = 3;			//桌子id
+	optional uint32 chair_id  = 4;			//座位id
+	optional uint32 proxy_id  = 5;			//服务端占用位
+}
+
+
+message EnterGameRsp
+{
+	optional int32 result         = 1;			//结果码
+	optional uint32 chair_count    = 2;
+	optional uint32 my_chair_id    = 3;
+	optional uint32 game_id        = 4;
+	optional uint32 room_id        = 5;
+	optional uint32 game_bus_id    = 6;
+}
+
+
+message UserStatus
+{
+	optional uint32 chair_id        = 1;		//座位号
+	optional bool lockfish_onoff  = 2; 			//锁定鱼状态
+	optional uint32 lockfish_uid    = 3;		//锁定鱼的UID
+	optional bool autoshoot_onoff = 4;			//自动状态
+	optional uint32 bullet_speedlev = 5;		//子弹速度等级
+}
+
+message UserStatusRsp
+{
+	repeated UserStatus userstatuslist = 1;
+}
+
+
+
+message ExitGameReq
+{
+	optional uint32 reserved = 1;  
+}
+
+message ExitGameRsp
+{
+	optional uint32 exit_type   = 1;   //0-退出失败(或者状态不对/玩家不在游戏中之类);  1-退出成功
+}
+
+
+
+
+//小游戏协议内容
+
+//进入小游戏回复
+message EnterMiniGameRsp
+{
+	optional int32 chair_id   = 1;   //玩家座位号
+	optional int32 miniGameId = 2;   //小游戏Id
+	optional int32 errorCode  = 3;   //0-正常  其它-错误
+	optional int32 playCount  = 4;   //当前玩的次数
+	optional int32 totalCount = 5;   //总次数
+	optional int32 baseScore  = 6;   //基础分
+	optional int32 nextScore  = 7;   //下一把能赢的分
+	optional int32 totalScore = 8;   //当前总分
+}
+
+//退出小游戏请求
+message FinishMiniGameReq
+{
+	optional int32 chair_id   = 1;   //玩家座位号
+	optional int32 miniGameId = 2;   //小游戏Id
+}
+
+//退出小游戏回复
+message FinishMiniGameRsp
+{
+	optional int32 chair_id   = 1;   //玩家座位号
+	optional int32 miniGameId = 2;   //小游戏Id
+	optional int32 finishType = 3;   //1-客户端主动退出 0-后台触发退出
+	optional int32 errorCode  = 4;   //0-正常  其它-错误
+}
+
+//请求小游戏结果
+message HaiShenResultReq
+{
+	optional int32 chair_id   = 1;   //玩家座位号
+	optional int32 requestId  = 2;   //请求序列号
+}
+
+//获取小游戏结果
+message HaiShenResultRsp
+{
+	optional int32 chair_id   = 1;   //玩家座位号
+	optional int32 isReward   = 2;   //是否中奖	1-中奖  0-不中奖
+	optional int32 playCount  = 3;   //当前玩的次数
+	optional int32 totalCount = 4;   //总次数
+	optional int32 baseScore  = 5;   //基础分
+	optional int32 nextScore  = 6;   //下一把能赢的分
+	optional int32 totalScore = 7;   //当前总分
+	optional int32 requestId  = 8;   //请求序列号
+}
+
+
+
+//旋转金牛进入
+message EnterGoldenBullRsp
+{
+	optional int32 chair_id   = 1;   //玩家座位号
+	optional int32 miniGameId = 2;   //小游戏Id
+	repeated int32 prizeValues= 3;   //奖励数值
+}
+//旋转金牛请求结果
+message GoldenBullResultReq
+{
+	optional int32 chair_id   = 1;   //玩家座位号
+}
+//旋转金牛请求回复
+message GoldenBullResultRsp
+{
+	optional int32 chair_id   = 1;   //玩家座位号
+	optional int32 prizeIndex = 2;   //奖序号
+	optional int32 totalScore = 3;   //赢分
+}
+
+//进入财神
+message EnterCaiShenRsp
+{
+	optional int32 chair_id   = 1;   //玩家座位号
+	optional int32 miniGameId = 2;   //小游戏Id
+	optional int32 winMul     = 3;   //赢倍数
+	optional int32 totalScore = 4;   //赢分
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

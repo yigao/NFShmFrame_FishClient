@@ -1,0 +1,15 @@
+package Lobby_GameItemConfig;
+
+message Lobby_GameItemConfigData{
+repeated Lobby_GameItemConfig Lobby_GameItemConfigList = 1;
+}
+
+message Lobby_GameItemConfig{
+optional int32 id = 1[default=0];
+optional string gameName = 2[default=''];
+optional int32 gameType = 3[default=0];
+optional int32 isShowCaiJin = 4[default=0];
+optional int32 ShowIconType = 5[default=0];
+optional int32 isShowHotIcon = 6[default=0];
+optional int32 isShowNewIcon = 7[default=0];
+}

@@ -1,0 +1,14 @@
+package SpecialDeclareConfig_2004;
+
+message SpecialDeclareConfigData{
+repeated SpecialDeclareConfig SpecialDeclareConfigList = 1;
+}
+
+message SpecialDeclareConfig{
+optional int32 id = 1[default=0];
+optional string specialDeclareRes = 2[default=''];
+optional int32 specialDeclareAnimType = 3[default=0];
+optional float delayTime = 4[default=0];
+optional float scoreShowTime = 5[default=0];
+optional int32 specialDeclareShowAudio = 6[default=0];
+}

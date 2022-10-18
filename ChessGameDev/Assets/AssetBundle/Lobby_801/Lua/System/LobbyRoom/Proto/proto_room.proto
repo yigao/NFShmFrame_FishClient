@@ -1,0 +1,94 @@
+syntax = "proto2";
+package proto_room;
+
+enum Proto_Room_CMD {
+	NF_CS_Msg_Get_Room_Info_Req = 1011;
+	NF_SC_Msg_Get_Room_Info_Rsp = 1012;
+
+	NF_CS_MSG_DeskListReq   = 1015;
+	NF_SC_MSG_DeskListRsp   = 1016;
+	NF_CS_MSG_ChairCheckReq = 1017;
+	NF_SC_MSG_ChairCheckRsp = 1018;
+	NF_CS_MSG_ExitRoomReq   = 1021;
+	NF_SC_MSG_ExitRoomRsp   = 1022; 
+};
+
+message RoomStatusInfo
+{
+  optional  uint32 game_id = 1;	//游戏ID
+  optional	uint32 room_id = 2; //房间ID
+  optional  string room_name = 3;
+  optional  uint64 enter_min = 4;
+  optional  uint64 enter_max = 5;
+  optional  uint32 status = 6; //0  游戏未上线 1 游戏上线
+}
+
+message GetRoomInfoReq
+{
+  optional uint32 game_id = 1;
+}
+
+message GetRoomInfoRsp
+{
+  optional int32 result = 1;
+  repeated RoomStatusInfo rooms = 2;
+}
+
+message GameChairInfo
+{
+	optional uint32 chair_id = 1; //椅子id
+	optional uint32 chair_status = 2;//椅子状态
+}
+
+message GameDeskInfo
+{
+	optional uint32 desk_id = 1;//桌子id
+	optional string desk_name = 2;//桌子名字
+	optional uint32 desk_status = 3; //桌子的状态，正常、火爆、爆满
+	optional uint32 chair_count = 4; //桌子里面椅子个数
+	repeated GameChairInfo chairs= 5; //桌子里面椅子列表信息
+}
+
+
+//请求桌子列表信息
+message DeskListReq
+{
+	optional uint32 room_id   = 1;  //房间ID
+	optional uint32 game_id   = 2;  //游戏ID
+}
+
+
+//返回桌子信息
+message DeskListRsp
+{
+	optional int32 result = 1; //0表示成功，1表示非法
+	repeated GameDeskInfo desks = 2;   //服务端自动分配椅子，只需返回当前玩家的桌子、椅子信息，数组长度为1。如果是客服端手动选择椅子，需要把桌子、椅子全部信息给客服端
+}
+
+//如果服务端自动分配椅子,不需要服务器验证椅子是否合法;客服端自己选择椅子,服务端验证该椅子合法则把该椅子分配给该玩家，不合法则返回错误
+message ChairCheckReq
+{
+	optional uint32 room_id = 1; //房间ID
+	optional uint32 game_id = 2; //游戏ID
+	optional uint32 desk_id = 3; //桌子ID
+	optional uint32 chair_id = 4; //椅子ID，客服端自己选择椅子，服务判断该椅子是否合法
+}
+
+//返回椅子合法的结果
+message ChairCheckRsp
+{
+	optional int32 result    = 1; //0表示成功，1表示非法
+}
+
+//退出游戏房间，针对玩家手动选择桌子、椅子
+message ExitRoomReq
+{
+	optional uint32 room_id   = 1;  //房间ID
+	optional uint32 game_id   = 2;  //游戏ID
+}
+
+//返回退出房间是否成功
+message ExitRoomRsp
+{
+	optional int32 result    = 1; //0表示成功，1表示非法
+}

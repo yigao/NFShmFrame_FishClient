@@ -1,0 +1,229 @@
+package Link_Msg;
+
+enum Proto_Link_CMD {
+	NF_CS_MSG_EnterGameReq   			=1019;		//进入游戏
+	NF_SC_MSG_EnterGameRsp   			=1020;
+	NF_CS_MSG_ExitGameReq    			=1023;		//退出游戏
+	NF_SC_MSG_ExitGameRsp    			=1024;
+	NF_CS_MSG_GameStatusReq 			=10001; 	//游戏状态请求
+	NF_SC_MSG_GameStatusRsp 			=10002; 	//游戏状态返回
+	NF_CS_MSG_LinkPlayReq 				=10011;		//请求游戏结果
+	NF_SC_MSG_LinkPlayRsp 				=10012;
+	NF_SC_MSG_EnterMiniGameReq 			=10013; 	//进入小游戏请求
+	NF_SC_MSG_FinishMiniGameRsp			=10016; 	//小游戏结束
+	NF_SC_MSG_EnterFreeGameRsp 			=10014; 	//进入免费游戏返回
+	NF_SCMSG_SystemError 				=11001; 	//系统错误码
+	NF_SC_MSG_EnterSelectGameRsp     	=10050; 	//进入选择游戏返回
+	NF_SC_MSG_SelectGameSelectOneReq 	=10051; 	//选择某一项上传
+	NF_SC_MSG_EnterFuXingFreeGameRsp 	=10060; 	//进入福星免费游戏返回
+	NF_SC_MSG_EnterBuBuGaoGameRsp    	=10070; 	//进入步步高免费游戏返回
+	NF_SC_MSG_UpdateJackpotRsp 			=11000; 	//刷新Jackpot
+}
+
+enum Game_TYPE {
+	GameType_Main = 0;
+	GameType_Free = 1;
+	GameType_Mary = 2;
+
+}
+
+
+
+message EnterGameReq
+{
+	optional uint32 game_id   = 1;			//游戏id
+	optional uint32 room_id   = 2;			//房间id
+	optional uint32 desk_id   = 3;			//桌子id
+	optional uint32 chair_id  = 4;			//座位id
+	optional uint32 proxy_id  = 5;			//服务端占用位
+}
+
+
+message EnterGameRsp
+{
+	optional uint32 result         = 1;			//结果码
+	optional uint32 chair_count    = 2;
+	optional uint32 my_chair_id    = 3;
+	optional uint32 game_id        = 6;
+	optional uint32 room_id        = 7;
+	optional uint32 background_index = 8;		//当前正在使用的场景ID
+	optional uint32 game_bus_id    = 9;
+	
+}
+
+
+message ExitGameReq
+{
+	optional uint32 reserved = 1;  
+}
+
+message ExitGameRsp
+{
+	optional uint32 exit_type   = 1;   //0-退出失败(或者状态不对/玩家不在游戏中之类);  1-退出成功
+}
+
+
+
+message GameStatusReq
+{
+	optional int32 gameId = 1; //游戏ID
+}
+
+message Col {
+		repeated int32 row = 1; 		//列-行二维坐标方式 	5-10列为图标对应关系值（数值1-10是预留类型
+	} 
+	
+message Point {
+		optional int32 posX = 1;		//列
+		optional int32 posY = 2;		//行
+	}
+
+message GameStatusRsp
+{
+	optional int32 gameType     = 1;   //游戏当时所在的状态 0-主游戏 1-免费游戏 2-小玛丽 其它 3 4 ...
+	repeated int64 chipScores   = 2;   //下注值列表
+	optional int32 curChipIndex = 3;   //当前下注序号,从1开始
+	optional int32 userId       = 4;   //玩家Id
+	optional string userName    = 5;   //玩家名字
+	optional int64 userMoney   = 6;   //玩家的钱
+	//---------------------------------以上是公共基础数据
+	repeated Col cols           = 7;   //游戏初始化数据，前五列是图标数据，后五列是附加中奖倍数
+	repeated int32 usTotemChipIndex = 8; //5个图腾对应的压注index; 这个数组里固定五个值
+	repeated int32 usJackpotTypes = 9; //四个彩金的类型，这个数组里固定4个值，对应四个彩金类型：1-小 2-中 3-大 4-巨
+}
+
+
+message LinkPlayReq {
+	optional int32 chipIndex = 1;
+	optional int32 gameType = 2;
+}
+
+message LinkPlayRsp {
+	
+	
+	message PrizeLine {
+		optional int32 lineId     = 1;
+		optional int32 winIconId  = 2;
+		optional int32 openType   = 3;
+		optional int32 winMul     = 4;
+		optional int64 score      = 5;
+		repeated Point linePoints = 6; 
+	}
+	
+	message MouseWheelPrize
+	{
+		optional Point PrizePos   = 1;  //神秘图标坐标
+		optional int32 PrizeIndex = 2;  //转轮里中奖Index
+		optional int64 PrizeValue = 3;  //中奖分数
+		optional int32 WheelType  = 4;  //转轮类型 1-老鼠滚轮  2-金鼠滚轮
+	}
+	
+	repeated Col cols = 1;				//图标结果  后面5列对应值-1为无效值
+	optional int64 chipScore  = 2;		//下注分
+	optional int64 winScore = 3;		//赢分
+	optional int64 userScore = 4;		//总分
+	optional int32 lineCount = 5;
+	repeated PrizeLine prizeLines = 6;
+	optional int32 gameType        = 7;  //当前游戏类型
+	optional int32 triggerMiniGame = 8;  //触发的小游戏ID
+	optional int32 freeGameCount   = 9;  //免费游戏总次数
+	optional int32 freeGameIndex   = 10; //免费游戏当前次数
+	optional int64 freeGameScore   = 11; //免费游戏累加分数
+	repeated MouseWheelPrize mouseWheelPrizes = 12; //鼠来宝神秘图标奖
+	repeated Point freezedPos = 13; //需要冻结的位置
+	repeated int32 usTotemStatus   = 14; //固定五个值，图腾的状态0-未激活 1-激活
+	optional int32 usWildIconLastTotalMul  = 15; //wild图标上次总倍数
+	optional int32 usWildIconTotalMul      = 16; //wild图标本次总倍数
+}
+
+
+message EnterMiniGameReq {
+	optional int32 gameType  = 1; //游戏类型
+}
+
+message EnterFreeGameRsp {
+	optional int32 gameType        = 1;  //游戏类型
+	optional int32 freeGameCount   = 2;  //免费游戏总次数
+	optional int32 freeGameIndex   = 3;  //免费游戏当前次数
+	optional int64 freeGameScore   = 4;  //免费游戏累加分数
+}
+
+message FinishMiniGameRsp {
+	optional int32 curGameType  = 1; //当前游戏类型
+	optional int32 nextGameType = 2; //下一个游戏类型
+	optional int64 winGameScore = 3; //本次赢的分数
+	optional int64 userScore   = 4; //用户身上的钱
+	optional int32 nextGameCount   = 5;  //下一个游戏总次数
+	optional int32 nextGameCurPlayCount   = 6;  //下一个游戏当前次数
+	optional int64 nextGameTotalScore   = 7;  //下一个游戏累加分数
+	optional int32 usWildIconMul		=8	//免费游戏总wild基础倍数
+	optional int64 usWildIconScore      = 9; //wild图标总分
+	optional int32 usSingleLineMul      = 10;//单线压注倍数
+	
+}
+
+//选择小游戏
+message EnterSelectGameRsp
+{
+	optional int32 gameType        = 1;  //游戏类型
+	repeated int32 usSelectOptions = 2;  //多个选项值
+}
+
+//NF_SC_MSG_SelectGameSelectOneReq = 10051; //选择某一项上传
+message SelectGameSelectOneReq
+{
+	optional int32 gameType        = 1;  //游戏类型
+	optional int32 usSelectValue   = 2;  //选中的值
+}
+
+
+
+//进入福星/步步高免费游戏返回
+message EnterFuXingFreeGameRsp //进入
+{
+	optional int32 gameType        = 1;  //游戏类型
+	optional int32 freeGameCount   = 2;  //免费游戏总次数
+	optional int32 freeGameIndex   = 3;  //免费游戏当前次数
+	optional int64 freeGameScore   = 4;  //免费游戏累加分数
+	optional int32 fuIconMul       = 5;  //福图标倍数
+	 optional int32 fuIconTotalMul  = 6;  //福图标累加倍数
+}
+
+ //进入步步高免费游戏返回
+message EnterBuBuGaoGameRsp //进入
+{
+	optional int32 gameType           = 1; //游戏类型
+	optional int32 bubuGaoGameCount   = 2;  //步步高游戏总次数
+	optional int32 bubuGaoGameIndex   = 3;  //步步高游戏当前次数
+	optional int64 bubuGaoGameScore   = 4;  //步步高游戏累加分数
+	optional int32 fuIconTotalMul     = 5;  //福图标累加倍数
+}
+
+
+message SystemError {
+ optional int32 errorType = 1;     //错误类型 0-无错  1-状态错误
+ optional int32 curGameStatus = 2; //0-主游戏  1-免费游戏
+}
+
+
+message UpdateJackpotRsp
+{
+  message Jackpot {
+      optional int32 jackpotType       = 1; //类型: 1-小奖, 2-中奖, 3-大奖, 4-巨奖
+    optional int64 jackpotStartValue = 2; //开始值
+    optional int64 jackpotAddValue   = 3; //增加值
+    optional int32 jackpotAddTime    = 4; //增加时间/秒
+  }
+
+  repeated Jackpot JackpotValues = 1;
+}
+
+
+
+message GuessGameUserExitReq
+{
+    optional int32 reserved=1;
+}
+
+
+

@@ -1,0 +1,11 @@
+package Lobby_SoundConfig;
+
+message Lobby_SoundConfigData{
+repeated Lobby_SoundConfig Lobby_SoundConfigList = 1;
+}
+
+message Lobby_SoundConfig{
+optional int32 id = 1[default=0];
+optional string soundName = 2[default=''];
+optional string soundPath = 3[default=''];
+}

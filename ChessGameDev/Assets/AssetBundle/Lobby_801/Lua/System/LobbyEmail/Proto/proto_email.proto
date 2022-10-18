@@ -1,0 +1,75 @@
+syntax = "proto2";
+package proto_email;
+
+enum Proto_Email_CMD {
+	NF_CS_SNS_MAIL_LIST_REQ 		= 1150; 	//请求邮件列表
+    NF_SC_SNS_MAIL_LIST_RSP 		= 1151;		//邮件数据返回
+    NF_CS_SNS_MAIL_READ_REQ 		= 1152;		//请求读取邮件
+    NF_SC_SNS_MAIL_READ_RSP 		= 1153;		//读取邮件结果返回
+    NF_CS_SNS_MAIL_DEL_REQ  		= 1154;		//请求删除邮件
+    NF_SC_SNS_MAIL_DEL_RSP  		= 1155;		//删除邮件结果返回
+    NF_SC_SNS_MAIL_AUTO_PUSH_RSP 	= 1156;		//系统自动推送邮件			
+};
+
+//请求邮件列表
+message Proto_CSMailListReq
+{
+	optional int32 begin                            = 1;    // 开始的序号(1开始)
+	optional int32 end                                      = 2;    // 结束的序号
+}
+
+//返回邮件列表
+message Proto_CSMailListRsp
+{
+    optional int32 result = 1;
+	repeated UserMailData role_mail_list      = 2;
+    optional int32 all_count				= 3;	//
+    optional int32 no_read_count		= 4;	//
+}
+
+message UserMailData
+{
+	optional uint64 id = 1; //唯一ID
+	optional string send_name	= 2[(yd_fieldoptions.field_bufsize)=32, (yd_fieldoptions.field_string_len)=32]; //发送者名字
+	optional string title		= 3[(yd_fieldoptions.field_bufsize)=64, (yd_fieldoptions.field_string_len)=64]; //邮件标题
+	optional string content		= 4[(yd_fieldoptions.field_bufsize)=1600, (yd_fieldoptions.field_string_len)=1600]; //自定义邮件内容
+	optional uint64 send_time	= 5;  //发送时间
+	optional int32 status = 6; //邮件状态 0--未读 1--已读
+	optional int32 usAreaId = 7;//运营商id
+}
+
+// 通知服务器,客户端读取某邮件。mail_id为0表示一键清除
+message Proto_CSMailReadReq
+{
+	optional uint64 mail_id                         = 1; //表示一键读取所有的邮件
+}
+
+//服务端返回读取邮件的结果
+message Proto_CSMailReadRsp
+{
+	optional uint32 result = 1;
+	repeated uint64 mail_id_list = 2;
+}
+
+//向服务端请求删除邮件,mail_id为0表示一键清除
+message Proto_CSMailDelReq
+{
+	repeated uint64 mail_id                         = 1;
+}
+
+//返回邮件删除结果
+message Proto_CSMailDelRsp
+{
+	optional int32 result = 1;
+	repeated uint64 mail_id_list                         = 2;
+    optional int32 all_count				= 3;	//
+    optional int32 no_read_count		= 4;	//
+}
+
+//平台自动推送邮件
+message Proto_CSMailAutoPushRsp
+{
+    optional int32 all_count				= 1;	//
+    optional int32 no_read_count		= 2;	//
+}
+
